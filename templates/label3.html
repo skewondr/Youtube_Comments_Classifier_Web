@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>Index</title>
+  </head>
+  <body>
+    {% for data in datas %}
+      <div>
+        <p>{{data.NAME}}</p>
+        <p>{{data.DATE}}</p>
+        <p>{{data.IMG}}</p>
+        <p>{{data.CONTENT}}</p>
+        <p>{{data.LABEL}}</p>
+        <p>------------------------</p>
+      </div>
+    {% endfor %}
+
+  </body>
+</html>
