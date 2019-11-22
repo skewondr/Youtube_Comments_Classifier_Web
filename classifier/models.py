@@ -6,4 +6,5 @@ class Crawl(models.Model):
     DATE=models.CharField(max_length=20,null=True)
     IMG=models.CharField(max_length=200,null=True)
     CONTENT=models.TextField(null=True)
-    LABEL=models.IntegerField(default=4)
+    PRE=models.TextField(null=True)
+    LABEL=models.IntegerField(null=True)

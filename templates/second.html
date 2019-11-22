@@ -1,0 +1,77 @@
+{% extends 'first.html' %}
+
+{% block content %}
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <style>
+    form{
+      font-style: 50px;
+      border-bottom: 2px solid gray;
+    }
+      #info{
+        border-left: :  2px solid gray;
+        width: 220px;
+      }
+      #grid{
+        display: grid;
+        grid-template-columns: 790px 1fr;
+
+      }
+      #main{
+        border-right: 2px solid gray;
+        width: 780px;
+      }
+      #list{
+        margin: 0px;
+        padding: 15px; padding-left: 50px;
+      }
+      #comments{
+        padding-left: 50px;
+      }
+      #video{
+        margin: 0px;
+        padding: 15px; padding-left: 50px;
+      }
+      ul{width:650px; height: 30px; list-style: none; padding-top: 15px}
+      ul li{float:left; margin-right:50px}
+      ul li a{font-size: 20px; font-weight: bold; text-decoration: none;}
+    </style>
+</head>
+
+<body>
+<div id="grid"> <!--gird 시작-->
+
+  <div id="main"> <!--main 시작-->
+
+<section >
+  <div class="inner" id="menu">
+    <nav>
+      <ul id="list">
+        <li><a href="{% url 'label3' %}">positive</a></li>
+        <li><a href="{% url 'label1' %}">negative</a></li>
+        <li><a href="{% url 'label0' %}">request</a></li>
+        <li><a href="{% url 'label2' %}">question</a></li>
+      </ul>
+    </nav>
+  </div>
+  </section>
+
+  </div><!--main 끝-->
+
+ <div id="info"> <!--info 시작-->
+<br>
+<iframe width="427" height="240" src={{real_video}} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+ <br><h2>Graph</h2><br>
+  <img src="" alt="" width="400">
+
+ </div> <!--info 끝-->
+
+
+</div> <!--grid 끝-->
+
+</body>
+
+{% endblock %}

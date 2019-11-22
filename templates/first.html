@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Get your friendly comments!</title>
+    <style>
+    form{
+      font-style: 50px;
+      border-bottom: 2px solid gray margin-bottom: 20px;
+      float: inherit;
+    }
+    img{}
+    </style>
+
+  </head>
+
+  <body>
+    <center>
+      <h1>Get your youtube comments</h1>
+      <div id="url_form">
+        <form method="GET" action={% url 'insert' %}>
+          {% csrf_token %}
+          <input id="url" name="url" type="text" style="text-align:center; width:360px; height:25px;" require>
+          <input type="submit" value="Submit" style="color:orange; font:20px; width:50px; height:20px;">
+        </form>
+      <div>
+    </center>
+    <div class="labels">
+      {% block content %}
+      {% endblock %}
+    </div>
+
+  </body>
+</html>
