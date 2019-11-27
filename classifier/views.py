@@ -41,35 +41,38 @@ from keras.models import load_model
 #    return HttpResponse("성공")
 # Create your views here.
 def mainp(request): #첫 화면 템플릿
-    return render(request,'first.html')
+    return render(request,'first2.html')
+
+def sp(request): #첫 화면 템플릿
+    return render(request,'second2.html')
 
 def label0(request):
     datas = Crawl.objects.filter(LABEL=0)
     context={
         "datas":datas
     }
-    return render(request,"label0.html",context)
+    return render(request,"label00.html",context)
 
 def label1(request):
     datas = Crawl.objects.filter(LABEL=1)
     context={
         "datas":datas
     }
-    return render(request,"label1.html",context)
+    return render(request,"label11.html",context)
 
 def label2(request):
     datas = Crawl.objects.filter(LABEL=2)
     context={
         "datas":datas
     }
-    return render(request,"label2.html",context)
+    return render(request,"label22.html",context)
 
 def label3(request): #제출후 메인화면으로
     datas = Crawl.objects.filter(LABEL=3)
     context={
         "datas":datas
     }
-    return render(request,"label3.html",context)
+    return render(request,"label33.html",context)
 
 def insert_data(request):
 
@@ -89,7 +92,7 @@ def insert_data(request):
     #인기순 카테고리 클릭
     #driver.find_element_by_xpath('//paper-listbox[@class="dropdown-content style-scope yt-dropdown-menu"]/a[1]').click()
 
-    num_pagedown =4 #n번 밑으로 내리는 것
+    num_pagedown =100 #n번 밑으로 내리는 것
     while num_pagedown:
         body.send_keys(Keys.PAGE_DOWN)
         time.sleep(2)
@@ -211,4 +214,4 @@ def insert_data(request):
     def get_num3(self):
         return Crawl.objects.filter(LABEL__contains=3).count()'''
 
-    return render(request,"second.html",context={"real_video":url_address})
+    return render(request,"second2.html",context={"real_video":url_address})

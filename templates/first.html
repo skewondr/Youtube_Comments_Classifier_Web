@@ -20,7 +20,7 @@
       <div id="url_form">
         <form method="GET" action={% url 'insert' %}>
           {% csrf_token %}
-          <input id="url" name="url" type="text" style="text-align:center; width:360px; height:25px;" require>
+          <input id="url" name="url" type="text" placeholder="URLs here" style="width:360px; height:25px;" required autofocus>
           <input type="submit" value="Submit" style="color:orange; font:20px; width:50px; height:20px;">
         </form>
       <div>
