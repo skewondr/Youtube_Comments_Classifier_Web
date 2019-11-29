@@ -207,7 +207,6 @@ img {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-gap: 2rem;
-	text-align: center;
 }
 
 .table {
@@ -299,6 +298,7 @@ img {
 .text-md {
 	margin-bottom: 1.5rem;
 	font-size: 1.2rem;
+	text-align: center;
 }
 
 .text-center {

@@ -1,0 +1,156 @@
+{% load static %}
+
+<header class="showcase">
+	<link rel="stylesheet" href="{% static 'css/first.css' %}">
+			<div class="showcase-content">
+				<h1>Get your Youtube Comments</h1>
+				<center>
+		      <div class="url_form">
+		        <form method="GET" action={% url 'insert' %}>
+		          {% csrf_token %}
+		          <input id="url" name="url" placeholder="URL here." type="text" style="text-align:center; width:500px; height:45px;" require>
+		          <input type="submit" value="Submit" style="color:white;">
+		        </form>
+		      <div>
+		    </center>
+				<br>
+				<br>
+				<br>
+				<a href="https://www.youtube.com" target="_blank" class="btn btn-xl"
+					> Go to Youtube <i class="fas fa-chevron-right btn-icon"></i
+				></a>
+			</div>
+
+
+</header>
+		<section class="tabs">
+			<div class="container">
+				<div id="tab-1" class="tab-item tab-border" onclick="selectItem">
+					<i class="fas fa-door-open fa-3x"></i>
+					<p class="hide-sm">User's Guide</p>
+				</div>
+				<div id="tab-2" class="tab-item" onclick="selectItem()">
+					<i class="fas fa-tablet-alt fa-3x"></i>
+					<p class="hide-sm">About Us</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="tab-content">
+			<div class="container">
+				<!-- Tab Content 1 -->
+				<div id="tab-1-content" class="tab-content-item show()">
+					<div class="tab-1-content-inner">
+						<div>
+							<p class="text-lg">
+								1. Put Youtube URL
+							</p>
+							<p class="text-lg">
+								2. The comments will be classified into 5 classes.
+							</p>
+						</div>
+						<img src="https://i.ibb.co/J2xDJV7/tab-content-1.png" alt="" />
+					</div>
+				</div>
+
+				<!-- Tab Content 2 -->
+				<div id="tab-2-content" class="tab-content-item">
+					<div class="tab-2-content-top">
+						<p class="text-lg">
+
+						</p>
+					</div>
+					<div class="tab-2-content-bottom">
+						<div>
+							<img src="{% static 'img/joy.png' %}" alt="" />
+							<p class="text-md">
+								임윤진 Yoonjin Im
+							</p>
+							<p class="text-dark">
+								Role: crawling, data preprocessing, labelling, deep-learning modelling, web developing
+							</p>
+							<br>
+							<p class="text-dark">
+								E-mail: skewondr@ajou.ac.kr
+							</p>
+							<br>
+							<p class="text-dark">
+								010-2853-3412
+							</p>
+						</div>
+						<div>
+							<img src="{% static 'img/walle.jpeg' %}" alt="" />
+							<p class="text-md">
+								금예인 Yein Keum
+							</p>
+							<p class="text-dark">
+								Role: crawling, labelling, web developing
+							</p>
+							<br>
+							<p class="text-dark">
+								E-mail: goldastra@ajou.ac.kr
+							</p>
+							<br>
+							<p class="text-dark">
+								010-9277-2676
+							</p>
+						</div>
+						<div>
+							<img src="{% static 'img/rex.jpg' %}" alt="" />
+							<p class="text-md">
+								김주영 Juyoung Kim
+							</p>
+							<p class="text-dark">
+								Role: labelling, business document processing
+							</p>
+							<br>
+							<p class="text-dark">
+								E-mail: brain077@ajou.ac.kr
+							</p>
+							<br>
+							<p class="text-dark">
+								010-8025-3296
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script type="text/javascript">
+				const tabItems = document.querySelectorAll('.tab-item');
+				const tabContentItems = document.querySelectorAll('.tab-content-item');
+
+				// Select tab content item
+				function selectItem(e) {
+					// Remove all show and border classes
+					removeBorder();
+					removeShow();
+					// Add border to current tab item
+					this.classList.add('tab-border');
+					// Grab content item from DOM
+					const tabContentItem = document.querySelector(`#${this.id}-content`);
+					// Add show class
+					tabContentItem.classList.add('show');
+				}
+
+				// Remove bottom borders from all tab items
+				function removeBorder() {
+					tabItems.forEach(item => {
+						item.classList.remove('tab-border');
+					});
+				}
+
+				// Remove show class from all content items
+				function removeShow() {
+					tabContentItems.forEach(item => {
+						item.classList.remove('show');
+					});
+				}
+
+				// Listen for tab item click
+				tabItems.forEach(item => {
+					item.addEventListener('click', selectItem);
+				});
+			</script>
+
+		</section>

@@ -38,13 +38,16 @@ from keras.constraints import unit_norm
 from sklearn.model_selection import KFold
 from keras.models import load_model
 
+src_url=""
+
 #    return HttpResponse("성공")
 # Create your views here.
 def mainp(request): #첫 화면 템플릿
-    return render(request,'first2.html')
+    return render(request,'first3.html')
 
-def sp(request): #첫 화면 템플릿
-    return render(request,'second2.html')
+def sp(request): #두 번째 화면 템플릿
+    global src_url
+    return render(request,'second2.html',context={"real_video":src_url})
 
 def label0(request):
     datas = Crawl.objects.filter(LABEL=0)
@@ -76,7 +79,12 @@ def label3(request): #제출후 메인화면으로
 
 def insert_data(request):
 
+    global src_url
+
     url_address = request.GET['url']
+    front_url="https://www.youtube.com/embed/"
+    back_url=url_address[-11:]
+    src_url=front_url+back_url
 
     Crawl.objects.all().delete()
 
@@ -92,7 +100,7 @@ def insert_data(request):
     #인기순 카테고리 클릭
     #driver.find_element_by_xpath('//paper-listbox[@class="dropdown-content style-scope yt-dropdown-menu"]/a[1]').click()
 
-    num_pagedown =100 #n번 밑으로 내리는 것
+    num_pagedown =10 #n번 밑으로 내리는 것
     while num_pagedown:
         body.send_keys(Keys.PAGE_DOWN)
         time.sleep(2)
@@ -147,8 +155,19 @@ def insert_data(request):
         line=str(comment)
         line=line.lower()
         #don't erase [?,:,"]
-        line=re.sub('[-=+,#/\^$.@*\※~&%ㆍ!’』\\‘|\(\)\[\]\<\>`“\'…》;]','',line)
         line=re.sub(emoji_pattern,'',line)
+        line=re.sub('[-=+,#/\^$.@*\※~&%ㆍ!’』\\‘|\(\)\[\]\<\>`“\'…》;]','',line)
+        length=len(line)
+        cnt=0
+        j=0
+        while (j < length) :
+            if line[j] == '?':
+                cnt+=1
+            else: cnt=0
+            if cnt>1:
+                line = line[:j] + line[j+1::]
+                length = len(line)
+            else: j+= 1
         line2=tokenizer.tokenize(line)
         X.append(line2)
 
@@ -169,7 +188,7 @@ def insert_data(request):
         result=[]
         for w in i:
             #표제어 추출
-            n.lemmatize(w)
+            w=n.lemmatize(w)
             #불용어 제거
             if w not in stop_words:
                 result.append(w)
@@ -214,4 +233,5 @@ def insert_data(request):
     def get_num3(self):
         return Crawl.objects.filter(LABEL__contains=3).count()'''
 
-    return render(request,"second2.html",context={"real_video":url_address})
+
+    return render(request,"second2.html",context={"real_video":src_url})
