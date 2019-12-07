@@ -1,0 +1,63 @@
+{% load static %}
+
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  	<link rel="stylesheet" href="{% static 'css/second.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
+
+  <script src="main.js"></script>
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- HEADER -->
+    <header>
+      <nav class="main-nav">
+        <a href={% url 'mainp' %}>Home</a>
+        <a href={% url 'sp' %}>Result</a>
+        <a href={% url 'label3' %}>Positive</a>
+        <a href={% url 'label1' %}>Negative</a>
+        <a href={% url 'label0' %}>Requests</a>
+        <a href={% url 'label2' %}>Questions</a>
+        <a href={% url 'label4' %}>Etc</a>
+      </nav>
+      <nav class="sub-nav">
+      </nav>
+    </header>
+    <!-- END OF HEADER -->
+
+    <!-- MAIN CONTAINER -->
+    <section class="main-container" >
+      <h1 id="positive">Etc</h1>
+            <ul class="commentList">
+              {% for data in datas %}
+                <li>
+                <div>
+                    <div class="commenterImage">
+                      <img src={{data.IMG}} onerror="this.src='{% static 'img/profile.png' %}'" alt=""/>
+                    </div>
+                    <div class="nameText">
+                        <p class="">{{data.NAME}}<span class="date sub-text">{{data.DATE}}</span></p>
+                    </div>
+                    <div class="commentText">
+                        <p class="">{{data.CONTENT}}</p>
+                    </div>
+                </div>
+                </li>
+              {% endfor %}
+
+            </ul>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>&copy 2018 LOL</p>
+      <!--<p>Carlos Avila &copy 2018</p>-->
+    </footer>
+  </div>
+</body>
+</html>

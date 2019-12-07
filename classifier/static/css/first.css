@@ -301,6 +301,11 @@ img {
 	text-align: center;
 }
 
+.text-md2 {
+	margin-bottom: 1.5rem;
+	font-size: 1.2rem;
+}
+
 .text-center {
 	text-align: center;
 }

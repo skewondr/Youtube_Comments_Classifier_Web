@@ -7,6 +7,8 @@
   	<link rel="stylesheet" href="{% static 'css/second.css' %}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+  <script type="text/javascript" src="//cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
 
   <script src="main.js"></script>
 </head>
@@ -22,6 +24,7 @@
         <a href={% url 'label1' %}>Negative</a>
         <a href={% url 'label0' %}>Requests</a>
         <a href={% url 'label2' %}>Questions</a>
+        <a href={% url 'label4' %}>Etc</a>
       </nav>
       <nav class="sub-nav">
       </nav>
@@ -31,25 +34,25 @@
     <!-- MAIN CONTAINER -->
     <section class="main-container" >
       <div class="location" id="home">
-        <h1 id="positive">Video</h1>
+        <h1 id="video">Video</h1>
         <iframe width="700" height="394" src={{real_video}} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
 
-      <h1 id="positive">Positive</h1>
+      <h1 id="graph1">Let's Check the Reaction</h1>
+      <div class="box">
+        <div id="chart-1">{{ output|safe }}</div>
+        <div id="chart-2">{{ output_2|safe }}</div>
+      </div>
+
       <div class="box">
       </div>
 
-      <h1 id="negative">Negative</h1>
       <div class="box">
       </div>
 
-      <h1 id="request">Requests</h1>
       <div class="box">
       </div>
 
-      <h1 id="question">Questions</h1>
-      <div class="box">
-      </div>
     </section>
 
     <!-- FOOTER -->

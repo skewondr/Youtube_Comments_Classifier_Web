@@ -40,21 +40,160 @@ from keras.models import load_model
 
 src_url=""
 
+from classifier.FusionCharts import *
+
 #    return HttpResponse("성공")
 # Create your views here.
+
+def get_num0():
+    return Crawl.objects.filter(LABEL__contains=0).count()
+def get_num1():
+    return Crawl.objects.filter(LABEL__contains=1).count()
+def get_num2():
+    return Crawl.objects.filter(LABEL__contains=2).count()
+def get_num3():
+    return Crawl.objects.filter(LABEL__contains=3).count()
+def get_num4():
+    return Crawl.objects.filter(LABEL__contains=4).count()
+
 def mainp(request): #첫 화면 템플릿
     return render(request,'first3.html')
 
 def sp(request): #두 번째 화면 템플릿
     global src_url
-    return render(request,'second2.html',context={"real_video":src_url})
+    if src_url!="":
+        s_u=src_url
+    # Chart data is passed to the `dataSource` parameter, as dictionary in the form of key-value pairs.
+    dataSource = OrderedDict()
+
+    # The `chartConfig` dict contains key-value pairs data for chart attribute
+    chartConfig = OrderedDict()
+    chartConfig["caption"] = "Distribution of Comments"
+    chartConfig["subCaption"] = ""
+    chartConfig["xAxisName"] = "Category"
+    chartConfig["yAxisName"] = "Count"
+    chartConfig["numberSuffix"] = ""
+    chartConfig["theme"] = "fusion"
+
+    # The `chartData` dict contains key-value pairs data
+    chartData = OrderedDict()
+    chartData["Positive"] = get_num3()
+    chartData["Negative"] = get_num1()
+    chartData["Requests"] = get_num0()
+    chartData["Question"] = get_num2()
+    chartData["Etc"] = get_num4()
+
+    dataSource["chart"] = chartConfig
+    dataSource["data"] = []
+
+    # Convert the data in the `chartData` array into a format that can be consumed by FusionCharts.
+    # The data for the chart should be in an array wherein each element of the array is a JSON object
+    # having the `label` and `value` as keys.
+
+    # Iterate through the data in `chartData` and insert in to the `dataSource['data']` list.
+    for key, value in chartData.items():
+        data = {}
+        data["label"] = key
+        data["value"] = value
+        dataSource["data"].append(data)
+
+
+    # Create an object for the column 2D chart using the FusionCharts class constructor
+    # The chart data is passed to the `dataSource` parameter.
+    column2D = FusionCharts("column2d", "ex1" , "600", "400", "chart-1", "json", dataSource)
+
+    return render(request,'second2.html',{"real_video":s_u,'output' : column2D.render()})
 
 def label0(request):
-    datas = Crawl.objects.filter(LABEL=0)
-    context={
-        "datas":datas
-    }
-    return render(request,"label00.html",context)
+        datas = Crawl.objects.filter(LABEL=0)
+        # Create an object for the Multiseries column 2D charts using the FusionCharts class constructor
+        mscol2D = FusionCharts("stackedColumn2DLine", "ex1" , "600", "400", "chart-1", "json",
+        # The data is passed as a string in the `dataSource` as parameter.
+        """{
+        "chart": {
+        "showvalues": "0",
+        "caption": "",
+        "subCaption": "(model version 1.0)",
+        "numberprefix": "",
+        "numberSuffix" : "%",
+        "plotToolText" : "$seriesName was <b>$dataValue</b>",
+        "showhovereffect": "1",
+        "yaxisname": "$ (In billions)",
+        "showSum":"1",
+        "theme": "fusion"
+        },
+        "categories": [{
+        "category": [{
+        "label": "2013"
+        }, {
+        "label": "2014"
+        }, {
+        "label": "2015"
+        }, {
+        "label": "2016"
+        }]
+        }],
+        "dataset": [{
+        "seriesname": "iPhone",
+        "data": [{
+        "value": "21"
+        }, {
+        "value": "24"
+        }, {
+        "value": "27"
+        }, {
+        "value": "30"
+        }]
+        }, {
+        "seriesname": "iPad",
+        "data": [{
+        "value": "8"
+        }, {
+        "value": "10"
+        }, {
+        "value": "11"
+        }, {
+        "value": "12"
+        }]
+        }, {
+        "seriesname": "Macbooks",
+        "data": [{
+        "value": "2"
+        }, {
+        "value": "4"
+        }, {
+        "value": "5"
+        }, {
+        "value": "5.5"
+        }]
+        }, {
+        "seriesname": "Others",
+        "data": [{
+        "value": "2"
+        }, {
+        "value": "4"
+        }, {
+        "value": "9"
+        }, {
+        "value": "11"
+        }]
+        }, {
+        "seriesname": "",
+        "plotToolText" : "",
+        "renderas": "",
+        "data": [{
+        "value": ""
+        }, {
+        "value": ""
+        }, {
+        "value": ""
+        }, {
+        "value": ""
+        }]
+        }]
+        }""")
+
+        return render(request,"label00.html",{"datas":datas,'output': mscol2D.render(), 'chartTitle': 'Prediction Portion'})
 
 def label1(request):
     datas = Crawl.objects.filter(LABEL=1)
@@ -70,12 +209,19 @@ def label2(request):
     }
     return render(request,"label22.html",context)
 
-def label3(request): #제출후 메인화면으로
+def label3(request):
     datas = Crawl.objects.filter(LABEL=3)
     context={
         "datas":datas
     }
     return render(request,"label33.html",context)
+
+def label4(request):
+    datas = Crawl.objects.filter(LABEL=4)
+    context={
+        "datas":datas
+    }
+    return render(request,"label44.html",context)
 
 def insert_data(request):
 
@@ -154,20 +300,6 @@ def insert_data(request):
 
         line=str(comment)
         line=line.lower()
-        #don't erase [?,:,"]
-        line=re.sub(emoji_pattern,'',line)
-        line=re.sub('[-=+,#/\^$.@*\※~&%ㆍ!’』\\‘|\(\)\[\]\<\>`“\'…》;]','',line)
-        length=len(line)
-        cnt=0
-        j=0
-        while (j < length) :
-            if line[j] == '?':
-                cnt+=1
-            else: cnt=0
-            if cnt>1:
-                line = line[:j] + line[j+1::]
-                length = len(line)
-            else: j+= 1
         line2=tokenizer.tokenize(line)
         X.append(line2)
 
@@ -199,22 +331,23 @@ def insert_data(request):
 
     for j in range(len(x_data)):
         line_f=' '.join(x_data[j])
+        line_f=re.sub(emoji_pattern,'',line_f)
+        line_f=re.sub('[-=+,#/\^$.@*\※~&%ㆍ!’』\\‘|\(\)\[\]\<\>`“\'…》;]','',line_f)
         x2_data.append(line_f)
 
     num_classes=5
     MAX_WORDS=6000
-    MAX_LEN=50
+    MAX_LEN=45
     EMBEDDING_DIM=100
 
     # loading
-    with open('/Users/apple1/youtube_caps/code/tokenizer.pickle', 'rb') as handle:
+    with open('/Users/apple1/django_test/yousite/tokenizer.pickle', 'rb') as handle:
         t = pickle.load(handle)
 
-    t.fit_on_texts(x2_data)
     x=t.texts_to_sequences(x2_data)
     x2=sequence.pad_sequences(x,maxlen=MAX_LEN)
 
-    model =load_model("/Users/apple1/youtube_caps/model.h5")
+    model =load_model("/Users/apple1/django_test/yousite/model2.h5")
     new_y=model.predict_classes(x2)
 
     i=0
@@ -224,14 +357,4 @@ def insert_data(request):
         each.save()
         i+=1
 
-    '''def get_num0(self):
-        return Crawl.objects.filter(LABEL__contains=0).count()
-    def get_num1(self):
-        return Crawl.objects.filter(LABEL__contains=1).count()
-    def get_num2(self):
-        return Crawl.objects.filter(LABEL__contains=2).count()
-    def get_num3(self):
-        return Crawl.objects.filter(LABEL__contains=3).count()'''
-
-
-    return render(request,"second2.html",context={"real_video":src_url})
+    return render(request,"ok.html")

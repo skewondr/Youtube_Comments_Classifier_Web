@@ -1,5 +1,5 @@
 {% load static %}
-
+<title>Team LOL</title>
 <header class="showcase">
 	<link rel="stylesheet" href="{% static 'css/first.css' %}">
 			<div class="showcase-content">
@@ -11,7 +11,7 @@
 		          <input id="url" name="url" placeholder="URL here." type="text" style="text-align:center; width:500px; height:45px;" require>
 		          <input type="submit" value="Submit" style="color:white;">
 		        </form>
-		      <div>
+		      </div>
 		    </center>
 				<br>
 				<br>
@@ -39,17 +39,33 @@
 		<section class="tab-content">
 			<div class="container">
 				<!-- Tab Content 1 -->
-				<div id="tab-1-content" class="tab-content-item show()">
+				<div id="tab-1-content" class="tab-content-item show">
 					<div class="tab-1-content-inner">
 						<div>
 							<p class="text-lg">
-								1. Put Youtube URL
+								Hello, welcome to visit our site!
 							</p>
-							<p class="text-lg">
-								2. The comments will be classified into 5 classes.
+							<p class="text-md2">
+								This site sorts your video's comments into 5 categories.
+								Positive, Negative, Question, Requirement and Etc.
+							</p>
+							<p class="text-md2">
+								1. Write an URL which you want to analyze then click the submit button.
+							</p>
+							<p class="text-md2">
+								2. Please wait for a moment.
+							</p>
+							<p class="text-md2">
+								3. Click above tabs for check the classified comments.
+							</p>
+							<p class="text-md2">
+								4. You can go back to 'Home' page to analyze other videos.
+							</p>
+							<p class="text-md2">
+								Thank you :D
 							</p>
 						</div>
-						<img src="https://i.ibb.co/J2xDJV7/tab-content-1.png" alt="" />
+						<img src="{% static 'img/guide.png' %}" alt="" />
 					</div>
 				</div>
 
@@ -105,7 +121,7 @@
 							</p>
 							<br>
 							<p class="text-dark">
-								E-mail: brain077@ajou.ac.kr
+								E-mail: brian077@ajou.ac.kr
 							</p>
 							<br>
 							<p class="text-dark">
