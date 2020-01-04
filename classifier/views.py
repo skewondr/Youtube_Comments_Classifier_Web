@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import Crawl
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.template import loader
 
 #packages for python
 
@@ -41,187 +42,60 @@ from keras.models import load_model
 src_url=""
 
 from classifier.FusionCharts import *
+import json
 
 #    return HttpResponse("성공")
 # Create your views here.
 
-def get_num0():
-    return Crawl.objects.filter(LABEL__contains=0).count()
-def get_num1():
-    return Crawl.objects.filter(LABEL__contains=1).count()
-def get_num2():
-    return Crawl.objects.filter(LABEL__contains=2).count()
-def get_num3():
-    return Crawl.objects.filter(LABEL__contains=3).count()
-def get_num4():
-    return Crawl.objects.filter(LABEL__contains=4).count()
+def get_num(num):
+    return Crawl.objects.filter(LABEL__contains=num).count()
+
+def high(num):
+    if num==1:
+        word_list=['nut','spoiler','abhor', 'dislike', 'aggresive', 'stubborn', 'evil', 'violent', 'fierce', 'passive', 'loud', 'sensitive','angry', 'awful', 'bad', 'confused', 'dirty', 'dead', 'deny', 'damage', 'fail','grim', 'guitly', 'hate', 'harmful', 'horrible', 'hurt', 'ignore', 'ill', 'imperfect', 'injure', 'lose', 'messy', 'negative', 'offensive', 'pain', 'petty', 'poor', 'quit', 'reject', 'rude', 'sad', 'scary', 'shock', 'sick', 'sorry', 'stupid', 'terrible', 'ugly', 'unfair', 'unhappy', 'upset', 'shoud not', 'ungreateful','unfortunately', "Don't", 'miss','weird','awkward']
+    elif num==2:
+        word_list=['curious','wonder','wondered','when','what','why','how','who','where']
+    elif num==3:
+        word_list=['prefer', 'like', 'beautiful', 'happy', 'delightful', 'positive', 'humble', 'hospitable', 'optimistic', 'friendly', 'lovely','pretty','hansome','good','great','best','lol','LOL','LMAO','lmao','fun','funny','enjoy','liked','perfect','nice']
+    elif num==0:
+        word_list=['tell me','please','can you','are you','collaborate','plz','want','review']
+
+    datas= Crawl.objects.filter(LABEL=num)
+    for data in datas:
+        text=re.sub('\n','',data.CONTENT)
+
+        for word in word_list:
+            text=re.sub(word,'<span style="background-color:yellow;">{0}</span>'.format(word),text.lower())
+        data.CONTENT=text
+        data.save()
+    return
 
 def mainp(request): #첫 화면 템플릿
     return render(request,'first3.html')
 
 def sp(request): #두 번째 화면 템플릿
     global src_url
-    if src_url!="":
-        s_u=src_url
-    # Chart data is passed to the `dataSource` parameter, as dictionary in the form of key-value pairs.
-    dataSource = OrderedDict()
-
-    # The `chartConfig` dict contains key-value pairs data for chart attribute
-    chartConfig = OrderedDict()
-    chartConfig["caption"] = "Distribution of Comments"
-    chartConfig["subCaption"] = ""
-    chartConfig["xAxisName"] = "Category"
-    chartConfig["yAxisName"] = "Count"
-    chartConfig["numberSuffix"] = ""
-    chartConfig["theme"] = "fusion"
-
-    # The `chartData` dict contains key-value pairs data
-    chartData = OrderedDict()
-    chartData["Positive"] = get_num3()
-    chartData["Negative"] = get_num1()
-    chartData["Requests"] = get_num0()
-    chartData["Question"] = get_num2()
-    chartData["Etc"] = get_num4()
-
-    dataSource["chart"] = chartConfig
-    dataSource["data"] = []
-
-    # Convert the data in the `chartData` array into a format that can be consumed by FusionCharts.
-    # The data for the chart should be in an array wherein each element of the array is a JSON object
-    # having the `label` and `value` as keys.
-
-    # Iterate through the data in `chartData` and insert in to the `dataSource['data']` list.
-    for key, value in chartData.items():
-        data = {}
-        data["label"] = key
-        data["value"] = value
-        dataSource["data"].append(data)
-
-
-    # Create an object for the column 2D chart using the FusionCharts class constructor
-    # The chart data is passed to the `dataSource` parameter.
-    column2D = FusionCharts("column2d", "ex1" , "600", "400", "chart-1", "json", dataSource)
-
-    return render(request,'second2.html',{"real_video":s_u,'output' : column2D.render()})
+    return render(request,'second2.html',{"real_video":src_url,"zero":get_num(0),"one":get_num(1),"two":get_num(2),"three":get_num(3),"four":get_num(4)})
 
 def label0(request):
-        datas = Crawl.objects.filter(LABEL=0)
-        # Create an object for the Multiseries column 2D charts using the FusionCharts class constructor
-        mscol2D = FusionCharts("stackedColumn2DLine", "ex1" , "600", "400", "chart-1", "json",
-        # The data is passed as a string in the `dataSource` as parameter.
-        """{
-        "chart": {
-        "showvalues": "0",
-        "caption": "",
-        "subCaption": "(model version 1.0)",
-        "numberprefix": "",
-        "numberSuffix" : "%",
-        "plotToolText" : "$seriesName was <b>$dataValue</b>",
-        "showhovereffect": "1",
-        "yaxisname": "$ (In billions)",
-        "showSum":"1",
-        "theme": "fusion"
-        },
-        "categories": [{
-        "category": [{
-        "label": "2013"
-        }, {
-        "label": "2014"
-        }, {
-        "label": "2015"
-        }, {
-        "label": "2016"
-        }]
-        }],
-        "dataset": [{
-        "seriesname": "iPhone",
-        "data": [{
-        "value": "21"
-        }, {
-        "value": "24"
-        }, {
-        "value": "27"
-        }, {
-        "value": "30"
-        }]
-        }, {
-        "seriesname": "iPad",
-        "data": [{
-        "value": "8"
-        }, {
-        "value": "10"
-        }, {
-        "value": "11"
-        }, {
-        "value": "12"
-        }]
-        }, {
-        "seriesname": "Macbooks",
-        "data": [{
-        "value": "2"
-        }, {
-        "value": "4"
-        }, {
-        "value": "5"
-        }, {
-        "value": "5.5"
-        }]
-        }, {
-        "seriesname": "Others",
-        "data": [{
-        "value": "2"
-        }, {
-        "value": "4"
-        }, {
-        "value": "9"
-        }, {
-        "value": "11"
-        }]
-        }, {
-        "seriesname": "",
-        "plotToolText" : "",
-        "renderas": "",
-        "data": [{
-        "value": ""
-        }, {
-        "value": ""
-        }, {
-        "value": ""
-        }, {
-        "value": ""
-        }]
-        }]
-        }""")
-
-        return render(request,"label00.html",{"datas":datas,'output': mscol2D.render(), 'chartTitle': 'Prediction Portion'})
+    datas = Crawl.objects.filter(LABEL=0)
+    return render(request,"label00.html",{"datas":datas})
 
 def label1(request):
     datas = Crawl.objects.filter(LABEL=1)
-    context={
-        "datas":datas
-    }
-    return render(request,"label11.html",context)
+    return render(request,"label11.html",{"datas":datas})
 
 def label2(request):
     datas = Crawl.objects.filter(LABEL=2)
-    context={
-        "datas":datas
-    }
-    return render(request,"label22.html",context)
+    return render(request,"label22.html",{"datas":datas})
 
 def label3(request):
     datas = Crawl.objects.filter(LABEL=3)
-    context={
-        "datas":datas
-    }
-    return render(request,"label33.html",context)
+    return render(request,"label33.html",{"datas":datas})
 
 def label4(request):
     datas = Crawl.objects.filter(LABEL=4)
-    context={
-        "datas":datas
-    }
-    return render(request,"label44.html",context)
+    return render(request,"label44.html",{"datas":datas})
 
 def insert_data(request):
 
@@ -308,7 +182,6 @@ def insert_data(request):
             DATE=date,
             IMG=image,
             CONTENT=comment,
-
         )
 
     #새로운 텍스트 정제 후 모델 load-------------------------------------------------------------------------------
@@ -356,5 +229,10 @@ def insert_data(request):
         each.LABEL=k
         each.save()
         i+=1
+
+    high(0)
+    high(1)
+    high(2)
+    high(3)
 
     return render(request,"ok.html")

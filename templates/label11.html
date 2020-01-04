@@ -7,7 +7,6 @@
   	<link rel="stylesheet" href="{% static 'css/second.css' %}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
-
   <script src="main.js"></script>
 </head>
 <body>
@@ -43,7 +42,7 @@
                         <p class="">{{data.NAME}}<span class="date sub-text">{{data.DATE}}</span></p>
                     </div>
                     <div class="commentText">
-                        <p class="">{{data.CONTENT}}</p>
+                        <p class="">{{data.CONTENT|safe}}</p>
                     </div>
                 </div>
                 </li>

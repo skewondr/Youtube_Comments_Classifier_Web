@@ -102,6 +102,10 @@ header {
   padding: 50px;
 }
 
+.container {
+  width: 70%;
+}
+
 .box {
   display: grid;
   grid-gap: 20px;
@@ -319,7 +323,8 @@ footer {
     overflow:auto;
 }
 .commentList li {
-    width:70%;
+    width:100%;
+    min-height: 30px;
     background-color: white;
     margin:0;
     margin-top:10px;

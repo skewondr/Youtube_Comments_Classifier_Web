@@ -4,14 +4,9 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="stylesheet" href="{% static 'css/second.css' %}">
+    <link rel="stylesheet" href="{% static 'css/second.css' %}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
-  <!--<script type="text/javascript" src="{% static "fusioncharts/fusioncharts.js" %}"></script>-->
-  <script type="text/javascript" src="//cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
-  <script type="text/javascript" src="//cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
-
-
   <script src="main.js"></script>
 </head>
 <body>
@@ -46,23 +41,23 @@
             <div class="nameText">
               <p class="">{{data.NAME}}<span class="date sub-text">{{data.DATE}}</span></p>
             </div>
-            <div class="commentText">
-              <p class="">{{data.CONTENT}}</p>
+            <div class="commentText" id="find">
+              <p class="">{{data.CONTENT|safe}}</p>
             </div>
           </div>
+          <br>
         </li>
         {% endfor %}
-
       </ul>
-      <!--<h3>{{ chartTitle|safe }}</h3>
-      <div id="chart-1">{{ output|safe }}</div>-->
-      <!--<div id="chart-2">{{ output_2|safe }}</div>-->
+
     </section>
 
     <!-- FOOTER -->
     <footer>
       <p>&copy 2018 LOL</p>
     </footer>
+
   </div>
+
 </body>
 </html>
